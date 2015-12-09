@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MitchellClaimsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ClaimVehicles">
+          <Key>
+            <PropertyRef Name="ClaimNumber" />
+            <PropertyRef Name="VehicleId" />
+          </Key>
+          <Property Name="ClaimNumber" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="VehicleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MitchellClaim">
+          <Key>
+            <PropertyRef Name="ClaimNumber" />
+          </Key>
+          <Property Name="ClaimNumber" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ClaimantFirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ClaimantLastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Status" Type="int" />
+          <Property Name="LossDate" Type="datetime" />
+          <Property Name="CauseOfLoss" Type="int" />
+          <Property Name="ReportedDate" Type="datetime" />
+          <Property Name="LossDescription" Type="nvarchar" MaxLength="200" />
+          <Property Name="AssignedAdjusterID" Type="bigint" />
+        </EntityType>
+        <EntityType Name="VehicleDetails">
+          <Key>
+            <PropertyRef Name="VehicleId" />
+          </Key>
+          <Property Name="VehicleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Vin" Type="varchar" MaxLength="17" Nullable="false" />
+          <Property Name="ModelYear" Type="smallint" />
+          <Property Name="MakeDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModelDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="EngineDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExteriorColor" Type="nvarchar" MaxLength="50" />
+          <Property Name="LicPlate" Type="varchar" MaxLength="10" />
+          <Property Name="LicPlateState" Type="char" MaxLength="2" />
+          <Property Name="LicPlateExpDate" Type="datetime" />
+          <Property Name="DamageDescription" Type="nvarchar" MaxLength="200" />
+          <Property Name="Mileage" Type="int" />
+        </EntityType>
+        <Association Name="FK_ClaimVehicles_MitchellClaim">
+          <End Role="MitchellClaim" Type="Self.MitchellClaim" Multiplicity="1" />
+          <End Role="ClaimVehicles" Type="Self.ClaimVehicles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MitchellClaim">
+              <PropertyRef Name="ClaimNumber" />
+            </Principal>
+            <Dependent Role="ClaimVehicles">
+              <PropertyRef Name="ClaimNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClaimVehicles_VehicleDetails">
+          <End Role="VehicleDetails" Type="Self.VehicleDetails" Multiplicity="1" />
+          <End Role="ClaimVehicles" Type="Self.ClaimVehicles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleDetails">
+              <PropertyRef Name="VehicleId" />
+            </Principal>
+            <Dependent Role="ClaimVehicles">
+              <PropertyRef Name="VehicleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MitchellClaimsModelStoreContainer">
+          <EntitySet Name="ClaimVehicles" EntityType="Self.ClaimVehicles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MitchellClaim" EntityType="Self.MitchellClaim" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehicleDetails" EntityType="Self.VehicleDetails" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ClaimVehicles_MitchellClaim" Association="Self.FK_ClaimVehicles_MitchellClaim">
+            <End Role="MitchellClaim" EntitySet="MitchellClaim" />
+            <End Role="ClaimVehicles" EntitySet="ClaimVehicles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClaimVehicles_VehicleDetails" Association="Self.FK_ClaimVehicles_VehicleDetails">
+            <End Role="VehicleDetails" EntitySet="VehicleDetails" />
+            <End Role="ClaimVehicles" EntitySet="ClaimVehicles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MitchellClaimsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="MitchellClaim">
+          <Key>
+            <PropertyRef Name="ClaimNumber" />
+          </Key>
+          <Property Name="ClaimNumber" Type="Guid" Nullable="false" />
+          <Property Name="ClaimantFirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimantLastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="MitchellClaimsModel.Status" />
+          <Property Name="LossDate" Type="DateTime" Precision="3" />
+          <Property Name="CauseOfLoss" Type="MitchellClaimsModel.CauseOfLossCode" />
+          <Property Name="ReportedDate" Type="DateTime" Precision="3" />
+          <Property Name="LossDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AssignedAdjusterID" Type="Int64" />
+          <NavigationProperty Name="VehicleDetails" Relationship="MitchellClaimsModel.ClaimVehicles" FromRole="MitchellClaim" ToRole="VehicleDetail" />
+        </EntityType>
+        <EntityType Name="VehicleDetail">
+          <Key>
+            <PropertyRef Name="VehicleId" />
+          </Key>
+          <Property Name="VehicleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Vin" Type="String" MaxLength="17" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModelYear" Type="Int16" />
+          <Property Name="MakeDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModelDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EngineDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExteriorColor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LicPlate" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="LicPlateState" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="LicPlateExpDate" Type="DateTime" Precision="3" />
+          <Property Name="DamageDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Mileage" Type="Int32" />
+          <NavigationProperty Name="MitchellClaims" Relationship="MitchellClaimsModel.ClaimVehicles" FromRole="VehicleDetail" ToRole="MitchellClaim" />
+        </EntityType>
+        <EntityContainer Name="MitchellClaimsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="MitchellClaims" EntityType="Self.MitchellClaim" />
+          <EntitySet Name="VehicleDetails" EntityType="Self.VehicleDetail" />
+          <AssociationSet Name="ClaimVehicles" Association="MitchellClaimsModel.ClaimVehicles">
+            <End Role="MitchellClaim" EntitySet="MitchellClaims" />
+            <End Role="VehicleDetail" EntitySet="VehicleDetails" />
+          </AssociationSet>
+        </EntityContainer>
+        <EnumType Name="Status" UnderlyingType="Byte">
+          <Member Name="OPEN" Value="1" />
+          <Member Name="CLOSED" Value="0" />
+        </EnumType>
+        <EnumType Name="CauseOfLossCode">
+          <Member Name="Other" Value="0" />
+          <Member Name="Collision" Value="1" />
+          <Member Name="Explosion" Value="2" />
+          <Member Name="Fire" Value="3" />
+          <Member Name="Hail" Value="4" />
+          <Member Name="MechanicalBreakdown" Value="5" />
+        </EnumType>
+        <Association Name="ClaimVehicles">
+          <End Type="MitchellClaimsModel.MitchellClaim" Role="MitchellClaim" Multiplicity="*" />
+          <End Type="MitchellClaimsModel.VehicleDetail" Role="VehicleDetail" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MitchellClaimsModelStoreContainer" CdmEntityContainer="MitchellClaimsEntities">
+          <EntitySetMapping Name="MitchellClaims">
+            <EntityTypeMapping TypeName="MitchellClaimsModel.MitchellClaim">
+              <MappingFragment StoreEntitySet="MitchellClaim">
+                <ScalarProperty Name="ClaimNumber" ColumnName="ClaimNumber" />
+                <ScalarProperty Name="ClaimantFirstName" ColumnName="ClaimantFirstName" />
+                <ScalarProperty Name="ClaimantLastName" ColumnName="ClaimantLastName" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="LossDate" ColumnName="LossDate" />
+                <ScalarProperty Name="CauseOfLoss" ColumnName="CauseOfLoss" />
+                <ScalarProperty Name="ReportedDate" ColumnName="ReportedDate" />
+                <ScalarProperty Name="LossDescription" ColumnName="LossDescription" />
+                <ScalarProperty Name="AssignedAdjusterID" ColumnName="AssignedAdjusterID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VehicleDetails">
+            <EntityTypeMapping TypeName="MitchellClaimsModel.VehicleDetail">
+              <MappingFragment StoreEntitySet="VehicleDetails">
+                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+                <ScalarProperty Name="Vin" ColumnName="Vin" />
+                <ScalarProperty Name="ModelYear" ColumnName="ModelYear" />
+                <ScalarProperty Name="MakeDescription" ColumnName="MakeDescription" />
+                <ScalarProperty Name="ModelDescription" ColumnName="ModelDescription" />
+                <ScalarProperty Name="EngineDescription" ColumnName="EngineDescription" />
+                <ScalarProperty Name="ExteriorColor" ColumnName="ExteriorColor" />
+                <ScalarProperty Name="LicPlate" ColumnName="LicPlate" />
+                <ScalarProperty Name="LicPlateState" ColumnName="LicPlateState" />
+                <ScalarProperty Name="LicPlateExpDate" ColumnName="LicPlateExpDate" />
+                <ScalarProperty Name="DamageDescription" ColumnName="DamageDescription" />
+                <ScalarProperty Name="Mileage" ColumnName="Mileage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ClaimVehicles" TypeName="MitchellClaimsModel.ClaimVehicles" StoreEntitySet="ClaimVehicles">
+            <EndProperty Name="VehicleDetail">
+              <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+            </EndProperty>
+            <EndProperty Name="MitchellClaim">
+              <ScalarProperty Name="ClaimNumber" ColumnName="ClaimNumber" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
