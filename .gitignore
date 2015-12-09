@@ -175,8 +175,9 @@ UpgradeLog*.XML
 UpgradeLog*.htm
 
 # SQL Server files
-*.mdf
-*.ldf
+# I commented this out to include the .mdf files for easy deployment
+#*.mdf
+#*.ldf
 
 # Business Intelligence projects
 *.rdl.data
