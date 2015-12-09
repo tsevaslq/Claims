@@ -75,23 +75,6 @@ namespace Claims.Controllers
             return m_manager.GetClaimsByLossDate(dtStart, dtEnd, false);
         }
 
-        /// <summary>
-        /// Gets vehicles for claim with given ClaimNumber
-        /// </summary>
-        /// <param name="id">ClaimNumber</param>
-        /// <returns>List of Vehicles</returns>
-        [Route("api/MitchellClaims/{id:guid}/Vehicles")]
-        [HttpGet]
-        public IHttpActionResult GetMitchellClaimVehicles(Guid id)
-        {
-            MitchellClaim mitchellClaim = m_manager.GetClaim(id);
-            if (mitchellClaim == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(mitchellClaim.VehicleDetails);
-        }
 
         /// <summary>
         /// Gets Vehicle with matching VIN for claim with matching ClaimNumber
@@ -242,7 +225,7 @@ namespace Claims.Controllers
 
             try
             {
-                m_manager.UpdateClaim(mitchellClaim);
+                m_manager.UpdateClaim(dbClaim);
             }
             catch (DbUpdateConcurrencyException)
             {

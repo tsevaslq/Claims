@@ -516,13 +516,6 @@
             <param name="lossEndDate">end of search range</param>
             <returns>Claims with a LossDate within the date range</returns>
         </member>
-        <member name="M:Claims.Controllers.MitchellClaimsController.GetMitchellClaimVehicles(System.Guid)">
-            <summary>
-            Gets vehicles for claim with given ClaimNumber
-            </summary>
-            <param name="id">ClaimNumber</param>
-            <returns>List of Vehicles</returns>
-        </member>
         <member name="M:Claims.Controllers.MitchellClaimsController.GetMitchellClaimVehicle(System.Guid,System.String)">
             <summary>
             Gets Vehicle with matching VIN for claim with matching ClaimNumber

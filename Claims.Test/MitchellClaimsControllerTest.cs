@@ -178,29 +178,6 @@ namespace Claims.Test
             Assert.IsTrue(result.Any(x => x.ClaimNumber == claim2.ClaimNumber));
         }
         [TestMethod]
-        public void TestGetClaimVehicles()
-        {
-            MitchellClaim claim = new MitchellClaim();
-            claim.ClaimNumber = Guid.NewGuid();
-            VehicleDetail vehicle = new VehicleDetail();
-            const string VIN = "12345";
-            vehicle.Vin = VIN;
-            claim.VehicleDetails = new[] { vehicle };
-            var mock = new Mock<IClaimManager>();
-            mock.Setup(x => x.GetClaim(claim.ClaimNumber)).Returns(claim);
-
-            MitchellClaimsController controller = new MitchellClaimsController(mock.Object);
-            controller.Request = new HttpRequestMessage();
-            controller.Configuration = new HttpConfiguration();
-            IHttpActionResult result = controller.GetMitchellClaimVehicles(claim.ClaimNumber);
-
-            OkNegotiatedContentResult<ICollection<VehicleDetail>> contentResult = result as OkNegotiatedContentResult<ICollection<VehicleDetail>>;
-            Assert.IsNotNull(contentResult);
-            Assert.IsNotNull(contentResult.Content);
-            Assert.AreEqual(1, contentResult.Content.Count());
-            Assert.AreEqual(VIN, contentResult.Content.ElementAt(0).Vin);
-        }
-        [TestMethod]
         public void TestGetClaimSpecificVehicles()
         {
             Guid claimNumber = Guid.NewGuid();
