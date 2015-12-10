@@ -9,6 +9,11 @@ namespace Claims
     {
         public static void Register(HttpConfiguration config)
         {
+            Setup(config);
+        }
+        
+        public static void Setup(HttpConfiguration config)
+        {
             //config.EnableSystemDiagnosticsTracing();
 
 
